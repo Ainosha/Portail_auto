@@ -15,6 +15,13 @@ void setup_wakeup_process()
 {
   //initialize lcd screen
   lcd.init();
+  if(!init_WIFI()){
+    Serial.print("error Wifi");
+  }
+  if(!init_MQTT()){
+    Serial.print("error MQTT");
+  }
+
   //init led
   pinMode(LED_BUILTIN, OUTPUT);
   // capteur
@@ -28,8 +35,12 @@ void wakeup_process()
   {
     // affichage LCD
     LCD_display(100);
+    openGate();
   } while(analogRead(sensorPin) > 1500);
   LCD_off();
+  if(!MQTT_disconnect()){
+    Serial.print("error disconnect MQTT");
+  }
 }
 
 static void LCD_display(int tempo)

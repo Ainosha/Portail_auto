@@ -1,69 +1,58 @@
-#include <portail_digi.h>
+#include "portail_digi.h"
 
+// Définition des constantes et variables
+const int ROWS = 4;
+const int COLS = 4;
 
-String inputCode = "";
+char keys[ROWS][COLS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+
+byte rowPins[ROWS] = {13, 12, 14, 27};  // Connexion des lignes du clavier
+byte colPins[COLS] = {26, 25, 33, 32};  // Connexion des colonnes du clavier
+
+// Variables pour le digicode
 Servo myservo;
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+String inputCode = "";
+const String correctCode = "1234";
 
-void portail_init(){
-
-  // Initialisation des LEDs
-  pinMode(ledRedPin, OUTPUT);
-  pinMode(ledGreenPin, OUTPUT);
-  pinMode(ledBluePin, OUTPUT);
-  pinMode(yellowLedPin, OUTPUT);
-
-  // Initialisation du servo
-  myservo.attach(servoPin);
-  myservo.write(0); // Position fermée
-
-  // LEDs éteintes au départ
-  digitalWrite(ledRedPin, LOW);
-  digitalWrite(ledGreenPin, LOW);
-  digitalWrite(ledBluePin, LOW);
-}
-
-void getpad(){
-  char key = keypad.getKey();
-  
-  if (key) {
-    Serial.println(key);
-    if (key == '#') {
-      // Vérifier si le code est correct
-      if (inputCode == correctCode) {
-        digitalWrite(ledGreenPin, HIGH); // LED verte si le code est correct
-        digitalWrite(ledRedPin, LOW);
-        digitalWrite(ledBluePin, LOW);
-
-        // Ouvrir le portail
-        openGate();
-      } else {
-        digitalWrite(ledRedPin, HIGH); // LED rouge si le code est incorrect
-        digitalWrite(ledGreenPin, LOW);
-        digitalWrite(ledBluePin, LOW);
-      }
-      inputCode = ""; // Réinitialiser le code
-    } else if (key == '*') {
-      inputCode = ""; // Réinitialiser le code
-    } else {
-      inputCode += key; // Ajouter le chiffre entré
-    }
-  }
-}
+// Pins pour les LEDs et le servo
+const int servoPin = 5;
+const int ledBuiltin = 2;
+const int yellowLedPin = 18;
 
 void openGate() {
-  blink(yellowLedPin);
-  myservo.write(90);   // Ouvrir le portail (90°)
-  delay(3000);         // Garder ouvert pendant 3 secondes
-  blink(yellowLedPin);
-  myservo.write(0);    // Fermer le portail (0°)
+  // Ouvrir le portail (90°) avec clignotement de la LED jaune en parallèle
+  moveServoWithBlink(0, 90, 3000);  // Passer de 0° à 90° en 3 secondes
+  
+  // Temporisation de 5 secondes avec LED éteinte
+  Serial.println("Temporisation de 5 secondes...");
+  digitalWrite(yellowLedPin, LOW);  // Éteindre la LED jaune
+  delay(5000);  // Attendre 5 secondes
+
+  // Fermer le portail (0°) avec clignotement de la LED jaune en parallèle
+  moveServoWithBlink(90, 0, 3000);  // Passer de 90° à 0° en 3 secondes
 }
 
-void blink(int Pin) {
-  for (int i = 0; i < 6; i++) {
-    digitalWrite(Pin, HIGH);
-    delay(250);
-    digitalWrite(Pin, LOW);
-    delay(250);
+void moveServoWithBlink(int startPos, int endPos, int moveDuration) {
+  int steps = 30;  // Diviser le mouvement en 30 étapes
+  int stepDelay = moveDuration / steps;  // Délai entre chaque étape
+
+  for (int i = 0; i <= steps; i++) {
+    // Calculer la position intermédiaire du servo
+    int currentPos = map(i, 0, steps, startPos, endPos);
+    myservo.write(currentPos);  // Déplacer le servo à la position intermédiaire
+
+    // Clignoter la LED jaune
+    digitalWrite(yellowLedPin, (i % 2 == 0) ? HIGH : LOW);  // Alterner ON/OFF à chaque étape
+
+    delay(stepDelay);  // Attendre avant l'étape suivante
   }
+  
+  // S'assurer que la LED jaune est éteinte après le mouvement
+  digitalWrite(yellowLedPin, LOW);
 }
