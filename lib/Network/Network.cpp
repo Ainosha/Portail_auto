@@ -10,7 +10,7 @@ Adafruit_MQTT_Publish photocell = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/fe
 Adafruit_MQTT_Subscribe onoffbutton = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME "/feeds/onoff");
 Adafruit_MQTT_Subscribe *subscription;
 
-bool init_WIFI(int after_n500_ms)
+void init_WIFI()
 {
   /* 
     Connect to WiFi access point.
@@ -25,14 +25,10 @@ bool init_WIFI(int after_n500_ms)
     delay(500);
     Serial.print(".");
     i++;
-    if(i>after_n500_ms){
-        return false;
-    }
   }
   Serial.println();
   Serial.println("WiFi connected");
   Serial.print("IP address: "); Serial.println(WiFi.localIP());
-  return true;
 }
 
 static bool init_MQTT() {
@@ -43,7 +39,7 @@ static bool init_MQTT() {
 
   // Stop if already connected.
   if (mqtt.connected()) {
-    return;
+    return true;
   }
 
   Serial.print("Connecting to MQTT... ");
@@ -71,13 +67,15 @@ bool send_mqtt(int data) {
   return photocell.publish(data);
 }
 
-char process_read_mqtt(int delay) {
-  mqtt.processPackets();
+String process_read_mqtt(int delay) {
+  mqtt.processPackets(delay);
     while ((subscription = mqtt.readSubscription(delay))) {
     if (subscription == &onoffbutton) {
       Serial.print(F("Got: "));
       Serial.println((char *)onoffbutton.lastread);
-      return (char *)onoffbutton.lastread;
+      String receive = (char *)onoffbutton.lastread;
+      return receive;
     }
   }
+    return "receive ?";
 }

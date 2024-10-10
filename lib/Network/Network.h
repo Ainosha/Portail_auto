@@ -17,10 +17,10 @@
 #define DELAY_MQTT_PROCESS 5000
 
 static bool init_MQTT();
-bool init_WIFI(int after_n500_ms);
+void init_WIFI();
 bool MQTT_disconnect();
 bool send_mqtt(int data);
-char process_read_mqtt(int delay);
+String process_read_mqtt(int delay);
 
 
 #endif

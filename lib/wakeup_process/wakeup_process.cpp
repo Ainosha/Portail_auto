@@ -14,6 +14,10 @@ void setup_wakeup_process()
 {
   //initialize lcd screen
   lcd.init();
+  init_WIFI();
+  if(init_MQTT()){
+    Serial.print("error MQTT")
+  }
   //init led
   pinMode(LED_BUILTIN, OUTPUT);
   // capteur
