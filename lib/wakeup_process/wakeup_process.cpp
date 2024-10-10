@@ -14,10 +14,13 @@ void setup_wakeup_process()
 {
   //initialize lcd screen
   lcd.init();
-  init_WIFI();
-  if(init_MQTT()){
-    Serial.print("error MQTT")
+  if(!init_WIFI()){
+    Serial.print("error Wifi");
   }
+  if(!init_MQTT()){
+    Serial.print("error MQTT");
+  }
+
   //init led
   pinMode(LED_BUILTIN, OUTPUT);
   // capteur
@@ -27,11 +30,17 @@ void setup_wakeup_process()
 
 void wakeup_process()
 {
+
     // affichage LCD
     LCD_display(15000);
     // musique 
     //coffin_dance_song(5);
     //song_mii(5);
+
+    openGate();
+    if(!MQTT_disconnect()){
+      Serial.print("error disconnect MQTT");
+    }
 }
 
 static void LCD_display(int tempo)

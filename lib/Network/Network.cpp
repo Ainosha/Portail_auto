@@ -10,7 +10,7 @@ Adafruit_MQTT_Publish photocell = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/fe
 Adafruit_MQTT_Subscribe onoffbutton = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME "/feeds/onoff");
 Adafruit_MQTT_Subscribe *subscription;
 
-void init_WIFI()
+bool init_WIFI()
 {
   /* 
     Connect to WiFi access point.
@@ -25,13 +25,17 @@ void init_WIFI()
     delay(500);
     Serial.print(".");
     i++;
+    if(i>10){
+        return false;
+    }
   }
   Serial.println();
   Serial.println("WiFi connected");
   Serial.print("IP address: "); Serial.println(WiFi.localIP());
+  return true;
 }
 
-static bool init_MQTT() {
+bool init_MQTT() {
     /*
         Connect to server mqtt
     */

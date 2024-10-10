@@ -7,7 +7,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <wakeup_process.h>
-#include <sendmessageapi.h>
 #include <RFID.h>
 #include <portail_digi.h>
 #include <Network.h>

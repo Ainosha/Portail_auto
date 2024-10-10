@@ -16,8 +16,8 @@
 
 #define DELAY_MQTT_PROCESS 5000
 
-static bool init_MQTT();
-void init_WIFI();
+bool init_MQTT();
+bool init_WIFI();
 bool MQTT_disconnect();
 bool send_mqtt(int data);
 String process_read_mqtt(int delay);
