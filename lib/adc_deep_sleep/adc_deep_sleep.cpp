@@ -10,7 +10,7 @@ static void init_ulp_program();
 */
 
 RTC_DATA_ATTR unsigned int ulp_adc_value = 0;
-unsigned int ulp_adc_threshold = 1 * (4095 / 3.9);  // 1 volt
+unsigned int ulp_adc_threshold = 1700; 
 
 const ulp_insn_t ulp_adc_program[] = {
     I_DELAY(32000),                   // Wait until ESP32 goes to deep sleep
@@ -41,9 +41,9 @@ void setup_adc_deep_sleep()
  
       case ESP_SLEEP_WAKEUP_ULP : 
         /* PROCESS */
-        wakeup_process();
+        wakeup_process();   
         /* PROCESS */
-        
+
         printf("Deep sleep wakeup\n");
         ulp_adc_value &= UINT16_MAX; /* Check https://docs.espressif.com/projects/esp-idf/en/v4.2.3/esp32/api-guides/ulp_macros.html?highlight=i_st#c.I_ST */
         printf("ULP Value=%d was above threshold (%d)\n", ulp_adc_value, ulp_adc_threshold);

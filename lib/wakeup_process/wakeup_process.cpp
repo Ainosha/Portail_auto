@@ -3,6 +3,7 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 static void LCD_display(int tempo);
+static void LCD_off();
 
 /* 
 ce que je dois setup : 
@@ -23,11 +24,12 @@ void setup_wakeup_process()
 
 void wakeup_process()
 {
+  do 
+  {
     // affichage LCD
-    LCD_display(15000);
-    // musique 
-    //coffin_dance_song(5);
-    //song_mii(5);
+    LCD_display(100);
+  } while(analogRead(sensorPin) > 1500);
+  LCD_off();
 }
 
 static void LCD_display(int tempo)
@@ -39,6 +41,10 @@ static void LCD_display(int tempo)
   lcd.setCursor(0, 1);
   lcd.print("Entrer DigiCode");
   delay(tempo);
+}
+
+static void LCD_off()
+{
   lcd.noBacklight();
   lcd.clear();
 }

@@ -2,7 +2,6 @@
 #include <adc_deep_sleep.h>
 #include <buzzer_song.h>
 #include <wakeup_process.h>
-#include <sendmessageapi.h>
 #include <RFID.h>
 #include <portail_digi.h>
 
