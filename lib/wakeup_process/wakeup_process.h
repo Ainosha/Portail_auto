@@ -14,6 +14,12 @@
 const int ledPin = 2;  // Use GPIO 2 for built-in LED (on many ESP32 boards)
 const int sensorPin = 36;  // GPIO36 is the VP pin
 const int sensorPinVN = 39;  // GPIO39 is the VN pin
+const int buttonpin = 0;
+
+#define PasswordPAD     "1234"
+#define PasswordUID     "1234"
+
+#define maxAttempts 500
 
 void wakeup_process();
 void setup_wakeup_process();

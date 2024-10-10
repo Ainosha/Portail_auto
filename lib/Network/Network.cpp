@@ -65,11 +65,14 @@ bool init_MQTT() {
 bool MQTT_disconnect(){
     return mqtt.disconnect();
 }
-
-bool send_mqtt(int data) {
-  //Send message to Controleur
-  return photocell.publish(data);
+bool wifi_disconnect(){
+  return WiFi.disconnect();
 }
+
+bool send_mqtt(const char* data) {
+  return photocell.publish(data); // Publish the C-style string
+}
+
 
 String process_read_mqtt(int delay) {
   mqtt.processPackets(delay);

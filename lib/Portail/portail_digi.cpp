@@ -3,6 +3,7 @@
 // Définition des constantes et variables
 const int ROWS = 4;
 const int COLS = 4;
+String inputCodes = "";  // Global variable to store the input code
 
 char keys[ROWS][COLS] = {
   {'1', '2', '3', 'A'},
@@ -17,7 +18,6 @@ byte colPins[COLS] = {26, 25, 33, 32};  // Connexion des colonnes du clavier
 // Variables pour le digicode
 Servo myservo;
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
-String inputCode = "";
 const String correctCode = "1234";
 
 // Pins pour les LEDs et le servo
@@ -56,3 +56,36 @@ void moveServoWithBlink(int startPos, int endPos, int moveDuration) {
   // S'assurer que la LED jaune est éteinte après le mouvement
   digitalWrite(yellowLedPin, LOW);
 }
+
+String getpad() {
+    char key = keypad.getKey();  // Read the key pressed on the keypad
+
+    if (key) {  // Check if a key is pressed
+        Serial.println(key);  // Print the key to the serial monitor for debugging
+
+        if (key == '#') {  // Check if '#' is pressed to validate the code
+            if (inputCodes.length() == 0) {
+                Serial.println("No code entered.");  // Handle the case of no code
+                String returnValue = "RFID";  // Prepare to return empty
+                inputCodes = "";  // Reset inputCodes
+                return returnValue;  // Return empty if no code was entered
+            }
+            Serial.print("Input code entered: ");
+            Serial.println(inputCodes);  // Print the entered code
+
+            String returnValue = inputCodes;  // Store the current inputCodes for returning
+            inputCodes = "";  // Reset inputCodes before returning
+            return returnValue;  // Return the entered code
+        } else if (key == '*') {
+            Serial.println("Input cleared.");  // Indicate input cleared
+            inputCodes = "";  // Clear the input code
+            return "";  // Return empty
+        } else {
+            // Add the pressed key to the input code
+            inputCodes += key;  
+        }
+    }
+    return "";  // Return empty if no key was pressed
+}
+
+

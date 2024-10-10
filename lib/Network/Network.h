@@ -19,8 +19,9 @@
 bool init_MQTT();
 bool init_WIFI();
 bool MQTT_disconnect();
-bool send_mqtt(int data);
+bool send_mqtt(const char* data); 
 String process_read_mqtt(int delay);
+bool wifi_disconnect();
 
 
 #endif
