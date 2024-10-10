@@ -2,6 +2,7 @@
 
 **Cours** : Objets Connectés Basse Consommation  
 **Auteur** : Théo LEBLANC, Eric PAN, Maxime JANNEZ, Thomas SEGARD
+
 **Date** : 10/2024
 
 ## Description du projet
