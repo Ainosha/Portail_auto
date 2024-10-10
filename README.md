@@ -1,7 +1,3 @@
-Voici un **README.md** mis à jour pour inclure toutes les nouvelles fonctionnalités de ton projet, y compris l'afficheur LCD, le capteur infrarouge, les messages WhatsApp et l'API pour l'autorisation à distance.
-
----
-
 # Projet Portail Automatique
 
 **Cours** : Objets Connectés Basse Consommation  
@@ -113,12 +109,8 @@ L'API permet de recevoir des messages et des réponses via WhatsApp pour autoris
 
 ## Auteurs
 
-- [Ton Nom] - Étudiant en [Nom de l'École], Cours Objets Connectés Basse Consommation
+- Théo LEBLANC, Eric PAN, Maxime JANNEZ, Thomas SEGARD - Étudiant en 5A à L'ESIEA, Cours Objets Connectés Basse Consommation
 
 ## Remerciements
 
-- Merci à [Nom du professeur] pour l'encadrement de ce projet.
-
----
-
-N'hésite pas à adapter certaines sections comme le **nom du professeur**, tes informations personnelles, ou à ajouter des détails spécifiques à l'API et aux notifications WhatsApp. Si tu souhaites des précisions sur certains points, fais-le moi savoir !
+- Merci à M COURBIN pour l'encadrement de ce projet.
